@@ -6,7 +6,7 @@ import java.util.TreeSet;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Podaj ciąg liczb, oddzielając je spacją (np. 1 2 3):");
+        System.out.println("Podaj ciąg liczb, oddzielając je spacją:");
         String input = scanner.nextLine();
         scanner.close();
 

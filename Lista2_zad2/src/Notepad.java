@@ -9,74 +9,68 @@ public class Notepad extends JFrame {
     private JTextArea textArea;
     private JFileChooser fileChooser;
 
-    public Notepad() {
+    public Notepad(){
         setSize(800,500);
         setTitle("Notepad");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         textArea = new JTextArea("");
         JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);
         createMenu();
         fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text files","txt");
         fileChooser.setFileFilter(filter);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
+
     private void createMenu(){
         JMenuBar menuBar = new JMenuBar();
+        JMenu file_menu = new JMenu("File");
         setJMenuBar(menuBar);
+        menuBar.add(file_menu);
+        JMenuItem new_menuItem = new JMenuItem("New");
+        JMenuItem save_menuItem = new JMenuItem("Save");
+        JMenuItem open_menuItem = new JMenuItem("Open");
+        JMenuItem close_menuItem = new JMenuItem("Close");
+        file_menu.add(new_menuItem);
+        file_menu.add(save_menuItem);
+        file_menu.add(open_menuItem);
+        file_menu.add(close_menuItem);
 
-        JMenu fileMenu = new JMenu("File");
-        menuBar.add(fileMenu);
-
-        JMenuItem newMenuItem = new JMenuItem("New");
-        JMenuItem openMenuItem = new JMenuItem("Open");
-        JMenuItem saveMenuItem = new JMenuItem("Save");
-        JMenuItem closeMenuItem = new JMenuItem("Close");
-
-        fileMenu.add(newMenuItem);
-        fileMenu.add(openMenuItem);
-        fileMenu.add(saveMenuItem);
-        fileMenu.addSeparator();
-        fileMenu.add(closeMenuItem);
-        newMenuItem.addActionListener(new ActionListener() {
+        new_menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                newDocument();
+                new_document();
             }
         });
-        openMenuItem.addActionListener(new ActionListener() {
+        save_menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openDocument();
+                save_document();
             }
         });
-        saveMenuItem.addActionListener(new ActionListener() {
+        open_menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveDocument();
+                open_document();
             }
         });
-
-        closeMenuItem.addActionListener(new ActionListener() {
+        close_menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
     }
-    private void newDocument() {
+    private void new_document(){
         textArea.setText("");
     }
-
-    private void openDocument() {
+    private void open_document(){
         int result = fileChooser.showOpenDialog(this);
-
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+        if(result == JFileChooser.APPROVE_OPTION){
+            File selected_file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+            try{
+                BufferedReader reader = new BufferedReader(new FileReader(selected_file));
                 StringBuilder content = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -84,15 +78,13 @@ public class Notepad extends JFrame {
                 }
                 reader.close();
                 textArea.setText(content.toString());
-            } catch (IOException ex) {
+            }catch(IOException ex){
                 ex.printStackTrace();
             }
         }
     }
-
-    private void saveDocument() {
+    private void save_document(){
         int result = fileChooser.showSaveDialog(this);
-
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try {

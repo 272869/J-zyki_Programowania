@@ -17,34 +17,32 @@ public class Shopping_list extends JFrame {
         removeButton = new JButton("Remove");
         shoppingListModel = new DefaultListModel<>();
         shoppingList = new JList<>(shoppingListModel);
-
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-
+        //productTextField.setBounds(50,300,200,20);
+        //addButton.setBounds(50,330,100,20);
+        //removeButton.setBounds(160,330,100,20);
         add(productTextField);
         add(addButton);
         add(removeButton);
         add(new JScrollPane(shoppingList));
-
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addProduct();
             }
         });
-
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeProduct();
             }
         });
-
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     private void addProduct() {
-        String productName = productTextField.getText().trim();
+        String productName = productTextField.getText();
         if (!productName.isEmpty()) {
             shoppingListModel.addElement(productName);
             productTextField.setText("");

@@ -5,8 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 public class PanelWithClickCounter extends JFrame implements MouseListener {
-    private Figure figure;
-    private HashMap<Figure, Long> clickTimes;
+    private final Figure figure;
+    private final HashMap<Figure, Long> clickTimes;
     JPanel mainPanel;
     public PanelWithClickCounter() {
         figure = new Figure(50, 50);

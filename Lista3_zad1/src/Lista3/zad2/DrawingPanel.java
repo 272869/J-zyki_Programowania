@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 public class DrawingPanel extends JFrame implements MouseMotionListener {
     public DrawingPanel(){
-
         setTitle("Drawing Area");
         addMouseMotionListener(this);
         setSize(400,400);

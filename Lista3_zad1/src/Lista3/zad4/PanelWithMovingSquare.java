@@ -24,8 +24,6 @@ class PanelWithMovingSquare extends JFrame implements KeyListener {
         add(mainPanel, BorderLayout.CENTER);
         setBackground(Color.white);
         addKeyListener(this);
-        setFocusable(true);
-        requestFocus();
     }
 
     private void moveSquare(int dx, int dy) {

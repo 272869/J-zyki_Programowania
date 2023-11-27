@@ -6,6 +6,7 @@ public class Main1 {
             public void run() {
                 DrawingAreaWithTextField drawingAreaWithTextField = new DrawingAreaWithTextField();
                 drawingAreaWithTextField.setLocationRelativeTo(null);
+                drawingAreaWithTextField.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 drawingAreaWithTextField.setVisible(true);
             }
         });

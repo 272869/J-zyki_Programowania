@@ -9,9 +9,7 @@ public class DrawingAreaWithTextField extends JFrame implements MouseMotionListe
 
     public DrawingAreaWithTextField(){
         setTitle("Drawing Area with Text Field");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(400,400);
-
         textField = new JTextField();
         textField.setBounds(0,0,400,30);
         add(textField);
@@ -30,7 +28,7 @@ public class DrawingAreaWithTextField extends JFrame implements MouseMotionListe
     }
     @Override
     public void mouseDragged(MouseEvent e) {
-        Graphics g = getGraphics();
+        Graphics g = drawingPanel.getGraphics();
         g.setColor(Color.BLACK);
         g.fillOval(e.getX(),e.getY(),5,5);
     }

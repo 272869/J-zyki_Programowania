@@ -20,44 +20,21 @@ public class MyFrame extends JFrame implements MouseListener, MouseWheelListener
         mainPanel.setBackground(Color.gray);
         mainPanel.addMouseWheelListener(this);
         mainPanel.addKeyListener(this);
-        mainPanel.setFocusable(true);
-        mainPanel.requestFocus();
         mainPanel.addMouseListener(this);
         add(mainPanel, BorderLayout.CENTER);
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-
-    @Override
-    public void mousePressed(MouseEvent e) {System.out.println("Naciśnięto przycisk myszy");}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {System.out.println("Zwolniono przycisk myszy");}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {System.out.println("Najechano kursorem na obszar rysowania");}
-
-    @Override
-    public void mouseExited(MouseEvent e) {System.out.println("Opuszczono obszar rysowania kursorem");}
-
-    @Override
-    public void keyTyped(KeyEvent e) {}
-
     @Override
     public void keyPressed(KeyEvent e) {
         square.setColor(Color.red);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         square.setColor(Color.cyan);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
-
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         int notches = e.getWheelRotation();
@@ -71,4 +48,16 @@ public class MyFrame extends JFrame implements MouseListener, MouseWheelListener
             mainPanel.repaint();
         }
     }
+    @Override
+    public void mousePressed(MouseEvent e) {System.out.println("Naciśnięto przycisk myszy");}
+    @Override
+    public void mouseReleased(MouseEvent e) {System.out.println("Zwolniono przycisk myszy");}
+    @Override
+    public void mouseEntered(MouseEvent e) {System.out.println("Najechano kursorem na obszar rysowania");}
+    @Override
+    public void mouseExited(MouseEvent e) {System.out.println("Opuszczono obszar rysowania kursorem");}
+    @Override
+    public void keyTyped(KeyEvent e) {}
+    @Override
+    public void mouseClicked(MouseEvent e) {}
 }

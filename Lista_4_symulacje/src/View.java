@@ -78,20 +78,20 @@ public class View extends JFrame {
         getContentPane().removeAll();
         for (int i = 0; i < 6; i++){
             Road current_road = traffic.get_road(i);
-            int position_x = current_road.get_X();
+            int position_x = current_road.get_X(); // pozycje startowe dla samochodów - pozycje początku dróg
             int position_y = current_road.get_Y();
             for (Car car : current_road.get_cars_array()) {
                 int x = position_x, y = position_y;
-                if(current_road.get_direction() == true && i < 2){
+                if(current_road.get_direction() == true && i < 2){ // droga pozioma  (+ = left to right)
                     x = position_x + (car.getX()*8);
                 }
-                else if(current_road.get_direction() == false && i < 2){
+                else if(current_road.get_direction() == false && i < 2){ // droga pozioma (- = right to left)
                     x = position_x - (car.getX()*8);
                 }
-                else if(current_road.get_direction() == false){
+                else if(current_road.get_direction() == false){ // drogi pionowe
                     y = position_y - (car.getX()*8);
                 }
-                else if(current_road.get_direction() == true){
+                else if(current_road.get_direction() == true){ // drogi pionowe
                     y = position_y + (car.getX()*8);
                 }
                 System.out.println("x= "+x+" y: "+y);

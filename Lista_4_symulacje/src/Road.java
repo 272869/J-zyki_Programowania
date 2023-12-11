@@ -18,7 +18,7 @@ public class Road {
         position_y = y;
         direction = dir;
         cars_array = new ArrayList<>();
-        traffic_lights_array = new ArrayList<Traffic_light>();
+        traffic_lights_array = new ArrayList<>();
         create_lights_array(number_of_lights,tab_x, color);
         timer = new Timer();
         timer.scheduleAtFixedRate(new TrafficLightTask(), 0, 5000);
@@ -54,7 +54,7 @@ public class Road {
     }
     private void place_car() {
         if (!is_empty(0)) return;
-        if(cars_array.size() > 0) return;
+        if(cars_array.size() > 0) return; // zeby auta nie spawnowaly sie na sobie
         Car car = new Car(0);
         cars_array.add(car);
     }

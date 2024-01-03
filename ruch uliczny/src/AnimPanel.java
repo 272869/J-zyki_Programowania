@@ -82,7 +82,6 @@ public class AnimPanel extends JPanel implements ActionListener {
         int minCarDistance = 60; // Minimalna dystancja między samochodami
         int minPedestrianDistance = 10; // Minimalna dystancja między pieszymi
         int collisionDistance = 34; // Minimalna dystancja między samochodami a pieszymi
-
         // Kontrola kolizji między pieszymi
         for (Piesi currentPiesi : piesiList) {
             for (Piesi otherPiesi : piesiList) {
@@ -95,16 +94,15 @@ public class AnimPanel extends JPanel implements ActionListener {
                 }
             }
         }
-
         // Kontrola kolizji między samochodami
         for (Samochod currentSamochod : samochodList) {
             for (Samochod otherSamochod : samochodList) {
                 if (currentSamochod != otherSamochod) {
                     distance = calculateDistance(currentSamochod.getBounds(), otherSamochod.getBounds());
                     if (distance < minCarDistance) {
-                        if (!currentSamochod.isStopped()) {
-                            //System.out.println("pered ostanowkoj");
-                            otherSamochod.stay();
+                        if (!currentSamochod.isStopped() && currentSamochod.getDirection() == otherSamochod.getDirection()) {
+                            if((currentSamochod.getBounds().x < otherSamochod.getBounds().x) && currentSamochod.getDirection() == 0) currentSamochod.stay();
+                            else if((currentSamochod.getBounds().x < otherSamochod.getBounds().x) && currentSamochod.getDirection() == 1) otherSamochod.stay();
                         }
                     } else {
                         otherSamochod.keepMoving();
@@ -112,7 +110,6 @@ public class AnimPanel extends JPanel implements ActionListener {
                 }
             }
         }
-
         // Kontrola kolizji między samochodami a pieszymi
         for (Samochod currentSamochod : samochodList) {
             for (Piesi currentPiesi : piesiList) {

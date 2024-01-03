@@ -47,7 +47,7 @@ public class Samochod implements Runnable, ActionListener {
     }
     @Override
     public void run() {
-        initialPosition = startingPositions[direction];
+        initialPosition = startingPositions[direction]; //ustalanie pozycji w zależności od kierunku
         aft.translate(initialPosition.getX(), initialPosition.getY()); //przesunięcie o wektor
         area.transform(aft);
         shape = area;
@@ -74,18 +74,8 @@ public class Samochod implements Runnable, ActionListener {
             aft = new AffineTransform();
             Rectangle bounds = area.getBounds();
             int carCenterX = bounds.x + bounds.width / 2;
-            int carCenterY = bounds.y + bounds.height / 2;
-            if (carCenterX > width + 15) {
-                initialPosition = startingPositions[new Random().nextInt(startingPositions.length)];
-                carCenterX = (int) initialPosition.getX() + bounds.width / 2;
-                carCenterY = (int) initialPosition.getY() + bounds.height / 2;
-                area = new Area(new Rectangle(carCenterX - bounds.width / 2, carCenterY - bounds.height / 2, bounds.width, bounds.height));
-            }
-            // konstrukcja przeksztalcenia
-            aft.translate(carCenterX, carCenterY);
-            aft.translate(-carCenterX, -carCenterY);
+            if (carCenterX > width + 15) stay();
             aft.translate(dx, dy);
-            // przeksztalcenie obiektu
             area.transform(aft);
         }
         return area;
@@ -96,4 +86,9 @@ public class Samochod implements Runnable, ActionListener {
         buffer.fill(shape);
         buffer.draw(shape);
     }
+
+    public int getDirection() {
+        return direction;
+    }
+
 }

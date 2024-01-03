@@ -3,7 +3,6 @@ enum direction {right, left, up, down}
 public class Car implements Runnable {
     static direction direction;
     private int x,y,speed=40,width=40,height=40;
-
     public Car(int x, int y, direction direction) {
         this.direction= direction;
         this.x=x;
@@ -31,12 +30,13 @@ public class Car implements Runnable {
             }
         }
     }
-
     public int getX() {
         return x;
     }
-
     public int getY() {
         return y;
+    }
+    public static direction getDirection() {
+        return direction;
     }
 }

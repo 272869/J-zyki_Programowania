@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,49 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Road extends JPanel implements ActionListener {
-    private static final long serialVersionUID = 1L;
     Image image;
-    Graphics2D device;
-    Graphics2D buffer;
-    private int delay = 70;
+    TrafficLight trafficLight = new TrafficLight();
+    Graphics2D device, buffer;
+    private int delay = 70, lightChangeDelay = 5000;
     private Timer timer, lightTimer;
     private List<Pedestrian> PedestrianList;
     private List<Car> CarList;
     Pedestrian pedestrian;
     Car car;
     private double distance;
-    private boolean isGreenLight = false;
-    private int lightChangeDelay = 5000;
     public Road() {
         setBackground(Color.WHITE);
         setBounds(10, 10, 500, 300);
         setLayout(null);
         timer = new Timer(delay, this);
-        lightTimer = new Timer(lightChangeDelay, e -> changeLights());
-        lightTimer.start();
+        //lightTimer = new Timer(lightChangeDelay, e -> changeLights());
+        //lightTimer.start();
         PedestrianList = new ArrayList<>();
         CarList = new ArrayList<>();
     }
-    private void changeLights() {
-        isGreenLight = !isGreenLight; // zmiana koloru świateł na przeciwny
-        System.out.println("Light green: "+isGreenLight);
-        if (isGreenLight) {
-            // Jeśli są zielone światła, ruch samochodów
-            for (Car car : CarList) {
-                car.keepMoving();
-            }
-            for (Pedestrian pedestrian : PedestrianList) {
-                pedestrian.stay();
-            }
-        } else {
-            // Jeśli są czerwone światła, ruch pieszych
-            for (Car car : CarList) {
-                car.stay();
-            }
-            for (Pedestrian pedestrian : PedestrianList) {
-                pedestrian.keepMoving();
-            }
-        }
+    void changeLights() {
+        trafficLight.isGreenLight = !trafficLight.isGreenLight; // zmiana koloru świateł na przeciwny
+        System.out.println("Light green: "+ trafficLight.getIsGreenLight());
     }
     public void initialize() {
         int width = getWidth();
@@ -60,22 +39,6 @@ public class Road extends JPanel implements ActionListener {
         device = (Graphics2D) getGraphics();
         device.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
-    /*public Rectangle getPiesiBounds() { //Dostęp do współrzędnych i wymiarów Piesi
-        if (pedestrian != null) {
-            return pedestrian.getBounds();
-        } else {
-            // Jeżeli jeszcze nie mamy samochodów to zwracamy pusty Rectangle
-            return new Rectangle();
-        }
-    }
-    public Rectangle getSamochodBounds() { //Dostęp do współrzędnych i wymiarów Samochod
-        if (car != null) {
-            return car.getBounds();
-        } else {
-            // Jeżeli jeszcze nie mamy samochodów to zwracamy pusty Rectangle
-            return new Rectangle();
-        }
-    }*/
     void addSam() {
         car = new Car(buffer, delay, getWidth(), getHeight(), 0);
         CarList.add(car);
@@ -96,10 +59,10 @@ public class Road extends JPanel implements ActionListener {
         timer.addActionListener(pedestrian);
         new Thread(pedestrian).start(); //Wątek dla piesi
     }
-    public void moveAllEntities() {
-        int minCarDistance = 60; // Minimalna dystancja między samochodami
-        int minPedestrianDistance = 10; // Minimalna dystancja między pieszymi
-        int collisionDistance = 34; // Minimalna dystancja między samochodami a pieszymi
+    public void moveAllAgents() {
+        int minCarDistance = 80; // Minimalny dystans między samochodami
+        int minPedestrianDistance = 30; // Minimalny dystans między pieszymi
+        int collisionDistance =60 ; // Minimalny dystans między samochodami a pieszymi
         // Kontrola kolizji między pieszymi
         for (Pedestrian currentPedestrian : PedestrianList) {
             for (Pedestrian otherPedestrian : PedestrianList) {
@@ -112,18 +75,37 @@ public class Road extends JPanel implements ActionListener {
                 }
             }
         }
+        /*if (trafficLight.isGreenLight) {
+            // Jeśli są zielone światła, ruch samochodów
+            for (Car car : CarList) {
+                car.keepMoving();
+            }
+            for (Pedestrian pedestrian : PedestrianList) {
+                if((pedestrian.getDirection()==0 && pedestrian.getBounds().y==100) || (pedestrian.getDirection()==1 && pedestrian.getBounds().y==180)) pedestrian.stay();
+            }
+        } else {
+            // Jeśli są czerwone światła, ruch pieszych
+            for (Car car : CarList) {
+                if((car.getDirection()==0 && car.getBounds().x == 180) || (car.getDirection()==1 && car.getBounds().x==240)) car.stay();
+            }
+            for (Pedestrian pedestrian : PedestrianList) {
+                pedestrian.keepMoving();
+            }
+        }*/
         // Kontrola kolizji między samochodami
         for (Car currentCar : CarList) {
             for (Car otherCar : CarList) {
                 if (currentCar != otherCar) {
                     distance = calculateDistance(currentCar.getBounds(), otherCar.getBounds());
-                    if (distance < minCarDistance) {
-                        if (!currentCar.isStopped() && currentCar.getDirection() == otherCar.getDirection()) {
-                            if((currentCar.getBounds().x < otherCar.getBounds().x) && currentCar.getDirection() == 0) currentCar.stay();
-                            else if((currentCar.getBounds().x < otherCar.getBounds().x) && currentCar.getDirection() == 1) otherCar.stay();
+                    if(currentCar.getDirection() == otherCar.getDirection()){
+                        if (distance < minCarDistance) {
+                            if (!currentCar.isStopped() ) {
+                                if((currentCar.getBounds().x < otherCar.getBounds().x) && currentCar.getDirection() == 0) currentCar.stay();
+                                else if((currentCar.getBounds().x < otherCar.getBounds().x) && currentCar.getDirection() == 1) otherCar.stay();
+                            }
+                        } else {
+                            otherCar.keepMoving();
                         }
-                    } else {
-                        otherCar.keepMoving();
                     }
                 }
             }
@@ -145,7 +127,7 @@ public class Road extends JPanel implements ActionListener {
                     }
                     else{
                         currentPedestrian.keepMoving();
-                        if(currentCar.getBounds().getCenterX() < currentPedestrian.getBounds().getCenterX()) {
+                        if((currentCar.getDirection()==0 && (currentCar.getBounds().getCenterX() < currentPedestrian.getBounds().getCenterX())) || currentCar.getDirection()==1 && (currentCar.getBounds().getCenterX() > currentPedestrian.getBounds().getCenterX())) {
                             currentCar.stay();
                         }
                         else{
@@ -164,22 +146,15 @@ public class Road extends JPanel implements ActionListener {
         return Math.sqrt(Math.pow(centerX2 - centerX1, 2) + Math.pow(centerY2 - centerY1, 2));
     }
     void animate() {
-        if (timer.isRunning()) {
-            timer.stop();
-        } else {
-            timer.start();
-        }
+        if (timer.isRunning()) timer.stop();
+        else timer.start();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         device.drawImage(image, 0, 0, null);
         buffer.clearRect(0, 0, getWidth(), getHeight());
         buffer.clearRect(0, 0, getWidth(), getHeight());
-        moveAllEntities();
-    }
-
-    public boolean getIsGreenLight() {
-        return isGreenLight;
+        moveAllAgents();
     }
 }
 

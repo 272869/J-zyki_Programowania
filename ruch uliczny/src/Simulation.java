@@ -9,7 +9,7 @@ public class Simulation extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    final Simulation simulation = new Simulation();
+                    Simulation simulation = new Simulation();
                     simulation.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -18,11 +18,12 @@ public class Simulation extends JFrame {
         });
     }
     public Simulation(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600,400);
+        setBackground(Color.WHITE);
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(null);
-
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Road road = new Road();
         contentPane.add(road);
         SwingUtilities.invokeLater(new Runnable() {
@@ -31,35 +32,38 @@ public class Simulation extends JFrame {
                 road.initialize();
             }
         });
-
-        JButton btnAdd1 = new JButton("Dodaj samochód"); //Dodanie samochodów
-        btnAdd1.addActionListener(new ActionListener() {
+        JButton addCarButton = new JButton("Dodaj samochód"); //Dodanie samochodów
+        addCarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 road.addSam();
             }
         });
-        btnAdd1.setBounds(10, 310, 130, 23);
-        contentPane.add(btnAdd1);
-
-        JButton btnAdd2 = new JButton("Dodaj pieszego"); //Dodanie piesi
-        btnAdd2.addActionListener(new ActionListener() {
+        addCarButton.setBounds(10, 310, 130, 23);
+        contentPane.add(addCarButton);
+        JButton addPedestrianButton = new JButton("Dodaj pieszego"); //Dodanie pieszego
+        addPedestrianButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 road.addPiesi();
             }
         });
-        btnAdd2.setBounds(150, 310, 130, 23);
-        contentPane.add(btnAdd2);
-        JButton btnAnimate = new JButton("Start"); //Pokazywanje
-        btnAnimate.addActionListener(new ActionListener() {
+        addPedestrianButton.setBounds(150, 310, 130, 23);
+        contentPane.add(addPedestrianButton);
+        JButton changeLightButton = new JButton("Zmień światło"); //Dodanie samochodów
+        changeLightButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                road.changeLights();
+            }
+        });
+        changeLightButton.setBounds(300, 310, 130, 23);
+        contentPane.add(changeLightButton);
+        JButton startButton = new JButton("Start"); //start symulacji
+        startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 road.animate();
             }
         });
-        btnAnimate.setBounds(300, 310, 80, 23);
-        contentPane.add(btnAnimate);
-
-        setSize(600,400);
-        setBackground(Color.WHITE);
+        startButton.setBounds(450, 310, 80, 23);
+        contentPane.add(startButton);
         setVisible(true);
     }
 }

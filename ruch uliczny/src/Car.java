@@ -10,9 +10,8 @@ public class Car implements Runnable, ActionListener {
     protected Area area;
     Road road = new Road();
     protected Shape shape;
-    private int direction;
     protected AffineTransform aft;
-    private int dx, dy; //prędkości
+    private int dx, dy, direction; //prędkości
     private final int v0 = 0, v4=4, vMinus4 = -4, delay, width, height;
     private final Color color;
     private final Point[] startingPositions;
@@ -54,16 +53,7 @@ public class Car implements Runnable, ActionListener {
             }
         }
     }
-    public void stay() {
-        stopped = true;
-    }
-    public void keepMoving(){
-        stopped = false;
-    }
-    public Rectangle getBounds() {
-        return area.getBounds();
-    }
-    /*public Shape nextFrame() {
+    public Shape nextFrame() {
         if (!stopped) {
             area = new Area(area);
             aft = new AffineTransform();
@@ -74,41 +64,40 @@ public class Car implements Runnable, ActionListener {
             area.transform(aft);
         }
         return area;
-    }*/
-    public Shape nextFrame() {
+    }
+    /*public Shape nextFrame() {
         if (!stopped) {
             area = new Area(area);
             aft = new AffineTransform();
             Rectangle bounds = area.getBounds();
             int carCenterX = bounds.x + bounds.width / 2;
-            // Zatrzymaj samochody z lewej strony na x = 180, gdy światła dla nich są czerwone
-            if (direction == 0 && carCenterX >= 180 && !road.getIsGreenLight()) {
-                stay();
-            }
-            // Zatrzymaj samochody z prawej strony na x = 240, gdy światła dla nich są czerwone
-            if (direction == 1 && carCenterX <= 240 && !road.getIsGreenLight()) {
-                stay();
-            }
+            if (direction == 0 && carCenterX >= 180 && !road.trafficLight.getIsGreenLight()) stay(); // Zatrzymaj samochody z lewej strony na x = 180, gdy światła dla nich są czerwone
+            if (direction == 1 && carCenterX <= 240 && !road.trafficLight.getIsGreenLight()) stay(); // Zatrzymaj samochody z prawej strony na x = 240, gdy światła dla nich są czerwone
             if (!stopped) {
-                int carCenterY = bounds.y + bounds.height / 2;
-                if (carCenterX > width + 15) {
-                    stay();
-                }
+                if (carCenterX > width + 15) stay();
                 aft.translate(dx, dy);
                 area.transform(aft);
             }
         }
         return area;
-    }
+    }*/
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         buffer.setColor(color);
         buffer.fill(shape);
         buffer.draw(shape);
     }
-
+    public void stay() {
+        stopped = true;
+    }
+    public void keepMoving(){
+        stopped = false;
+    }
     public int getDirection() {
         return direction;
+    }
+    public Rectangle getBounds() {
+        return area.getBounds();
     }
 
 }

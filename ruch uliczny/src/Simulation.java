@@ -3,40 +3,39 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AnimatorApp extends JFrame {
-    private static final long serialVersionUID = 1L;
+public class Simulation extends JFrame {
     private JPanel contentPane;
     public static void main(String[] args){
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    final AnimatorApp frame = new AnimatorApp();
-                    frame.setVisible(true);
+                    final Simulation simulation = new Simulation();
+                    simulation.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-    public AnimatorApp(){
+    public Simulation(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        AnimPanel kanwa = new AnimPanel();
-        contentPane.add(kanwa);
+        Road road = new Road();
+        contentPane.add(road);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                kanwa.initialize();
+                road.initialize();
             }
         });
 
         JButton btnAdd1 = new JButton("Dodaj samochód"); //Dodanie samochodów
         btnAdd1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                kanwa.addSam();
+                road.addSam();
             }
         });
         btnAdd1.setBounds(10, 310, 130, 23);
@@ -45,7 +44,7 @@ public class AnimatorApp extends JFrame {
         JButton btnAdd2 = new JButton("Dodaj pieszego"); //Dodanie piesi
         btnAdd2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                kanwa.addPiesi();
+                road.addPiesi();
             }
         });
         btnAdd2.setBounds(150, 310, 130, 23);
@@ -53,7 +52,7 @@ public class AnimatorApp extends JFrame {
         JButton btnAnimate = new JButton("Start"); //Pokazywanje
         btnAnimate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                kanwa.animate();
+                road.animate();
             }
         });
         btnAnimate.setBounds(300, 310, 80, 23);

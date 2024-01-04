@@ -4,21 +4,16 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.util.Random;
 
-public class Samochod implements Runnable, ActionListener {
+public class Car implements Runnable, ActionListener {
     protected Graphics2D buffer; // do rysowania obiektów
     protected Area area;
+    Road road = new Road();
     protected Shape shape;
     private int direction;
     protected AffineTransform aft;
     private int dx, dy; //prędkości
-    private final int predkosc_zero = 0;
-    private final int predkosc_cztery = 4;
-    private final int predkosc_minus_cztery = -4;
-    private final int delay;
-    private final int width;
-    private final int height;
+    private final int v0 = 0, v4=4, vMinus4 = -4, delay, width, height;
     private final Color color;
     private final Point[] startingPositions;
     private Point initialPosition;
@@ -26,7 +21,7 @@ public class Samochod implements Runnable, ActionListener {
     public boolean isStopped() {
         return stopped;
     }
-    public Samochod(Graphics2D buf, int del, int w, int h, int dir){
+    public Car(Graphics2D buf, int del, int w, int h, int dir){
         delay = del;
         buffer = buf;
         width = w;
@@ -37,9 +32,9 @@ public class Samochod implements Runnable, ActionListener {
                 new Point(5, 120),
                 new Point(490, 160),
         };
-        if(direction==0)dx=predkosc_cztery;
-        else dx=predkosc_minus_cztery;
-        dy = predkosc_zero;
+        if(direction==0)dx=v4;
+        else dx = vMinus4;
+        dy = v0;
         color = Color.BLACK;
         shape = new Rectangle2D.Float(0,0,30,20);
         aft = new AffineTransform();
@@ -68,7 +63,7 @@ public class Samochod implements Runnable, ActionListener {
     public Rectangle getBounds() {
         return area.getBounds();
     }
-    public Shape nextFrame() {
+    /*public Shape nextFrame() {
         if (!stopped) {
             area = new Area(area);
             aft = new AffineTransform();
@@ -77,6 +72,31 @@ public class Samochod implements Runnable, ActionListener {
             if (carCenterX > width + 15) stay();
             aft.translate(dx, dy);
             area.transform(aft);
+        }
+        return area;
+    }*/
+    public Shape nextFrame() {
+        if (!stopped) {
+            area = new Area(area);
+            aft = new AffineTransform();
+            Rectangle bounds = area.getBounds();
+            int carCenterX = bounds.x + bounds.width / 2;
+            // Zatrzymaj samochody z lewej strony na x = 180, gdy światła dla nich są czerwone
+            if (direction == 0 && carCenterX >= 180 && !road.getIsGreenLight()) {
+                stay();
+            }
+            // Zatrzymaj samochody z prawej strony na x = 240, gdy światła dla nich są czerwone
+            if (direction == 1 && carCenterX <= 240 && !road.getIsGreenLight()) {
+                stay();
+            }
+            if (!stopped) {
+                int carCenterY = bounds.y + bounds.height / 2;
+                if (carCenterX > width + 15) {
+                    stay();
+                }
+                aft.translate(dx, dy);
+                area.transform(aft);
+            }
         }
         return area;
     }

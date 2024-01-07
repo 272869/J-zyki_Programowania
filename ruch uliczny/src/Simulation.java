@@ -19,7 +19,7 @@ public class Simulation extends JFrame {
     }
     public Simulation(){
         setSize(600,400);
-        setBackground(Color.WHITE);
+        setBackground(Color.lightGray);
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(null);
@@ -35,7 +35,7 @@ public class Simulation extends JFrame {
         JButton addCarButton = new JButton("Dodaj samochód"); //Dodanie samochodów
         addCarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                road.addSam();
+                road.addCar();
             }
         });
         addCarButton.setBounds(10, 310, 130, 23);
@@ -43,7 +43,7 @@ public class Simulation extends JFrame {
         JButton addPedestrianButton = new JButton("Dodaj pieszego"); //Dodanie pieszego
         addPedestrianButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                road.addPiesi();
+                road.addPedestrian();
             }
         });
         addPedestrianButton.setBounds(150, 310, 130, 23);
@@ -59,7 +59,7 @@ public class Simulation extends JFrame {
         JButton startButton = new JButton("Start"); //start symulacji
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                road.animate();
+                road.simulate();
             }
         });
         startButton.setBounds(450, 310, 80, 23);

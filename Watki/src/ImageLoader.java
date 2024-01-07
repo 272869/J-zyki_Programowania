@@ -5,18 +5,12 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-
 class ImageProcessingApp extends JFrame {
     private JLabel imageLabel;
-    private JButton loadImageButton;
-    private JButton grayscaleButton;
-    private JButton sepiaButton;
-    private JButton cancelButton;
-    private BufferedImage originalImage;
-    private BufferedImage processedImage;
+    private JButton loadImageButton, grayscaleButton, sepiaButton, cancelButton;
+    private BufferedImage originalImage, processedImage;
     private volatile boolean isProcessing;
     private SwingWorker<Void, Void> currentWorker;
-
     public ImageProcessingApp() {
         setTitle("Image Processing App");
         setSize(600, 400);
@@ -67,7 +61,6 @@ class ImageProcessingApp extends JFrame {
             }
         });
         add(sepiaButton, BorderLayout.EAST);
-
         cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -76,7 +69,6 @@ class ImageProcessingApp extends JFrame {
         });
         add(cancelButton, BorderLayout.WEST);
     }
-
     private synchronized void loadImage(File file) {
         try {
             originalImage = ImageIO.read(file);
@@ -84,7 +76,6 @@ class ImageProcessingApp extends JFrame {
             e.printStackTrace();
         }
     }
-
     private void displayLoadedImage() {
         if (originalImage != null) {
             ImageIcon imageIcon = new ImageIcon(originalImage);
@@ -92,7 +83,6 @@ class ImageProcessingApp extends JFrame {
             imageLabel.repaint();
         }
     }
-
     private void applyGrayscale() {
         isProcessing = true;
         currentWorker = new SwingWorker<Void, Void>() {
@@ -111,7 +101,6 @@ class ImageProcessingApp extends JFrame {
                 }
                 return null;
             }
-
             @Override
             protected void done() {
                 isProcessing = false;
@@ -149,7 +138,6 @@ class ImageProcessingApp extends JFrame {
                 }
                 return null;
             }
-
             @Override
             protected void done() {
                 isProcessing = false;

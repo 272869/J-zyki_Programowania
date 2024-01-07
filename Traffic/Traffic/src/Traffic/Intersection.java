@@ -37,9 +37,9 @@ public class Intersection {
         else return yDown;
     }
     public int returnDirectionLen(direction direction){
-        if(direction== Traffic.direction.right)return rightLen;
-        if(direction== Traffic.direction.left)return leftLen;
-        if(direction== Traffic.direction.up)return upLen;
+        if(direction == Traffic.direction.right)return rightLen;
+        if(direction == Traffic.direction.left)return leftLen;
+        if(direction == Traffic.direction.up)return upLen;
         else return downLen;
     }
     public void addCar(direction direction){

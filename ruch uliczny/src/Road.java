@@ -39,7 +39,7 @@ public class Road extends JPanel implements ActionListener {
         device = (Graphics2D) getGraphics();
         device.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
-    void addSam() {
+    void addCar() {
         car = new Car(buffer, delay, getWidth(), getHeight(), 0);
         CarList.add(car);
         timer.addActionListener(car);
@@ -49,7 +49,7 @@ public class Road extends JPanel implements ActionListener {
         timer.addActionListener(car);
         new Thread(car).start(); //Wątek dla samochodów
     }
-    void addPiesi() {
+    void addPedestrian() {
         pedestrian = new Pedestrian(buffer, delay, getWidth(), getHeight(),0);
         PedestrianList.add(pedestrian);
         timer.addActionListener(pedestrian);
@@ -115,13 +115,13 @@ public class Road extends JPanel implements ActionListener {
             for (Pedestrian currentPedestrian : PedestrianList) {
                 double distance = calculateDistance(currentCar.getBounds(), currentPedestrian.getBounds());
                 if (distance < collisionDistance) {
-                    double CarCenterX = currentCar.getBounds().getCenterX();
-                    double CarCenterY = currentCar.getBounds().getCenterY();
-                    double piesiCenterX = currentPedestrian.getBounds().getCenterX();
-                    double piesiCenterY = currentPedestrian.getBounds().getCenterY();
+                    double carCenterX = currentCar.getBounds().getCenterX();
+                    double carCenterY = currentCar.getBounds().getCenterY();
+                    double pedestrianCenterX = currentPedestrian.getBounds().getCenterX();
+                    double pedestrianCenterY = currentPedestrian.getBounds().getCenterY();
 
-                    boolean intersectX = Math.abs(CarCenterX - piesiCenterX) < (currentCar.getBounds().getWidth() + currentPedestrian.getBounds().getWidth()) / 2 + 5;
-                    boolean intersectY = Math.abs(CarCenterY - piesiCenterY) < (currentCar.getBounds().getHeight() + currentPedestrian.getBounds().getHeight()) / 2 + 5;
+                    boolean intersectX = Math.abs(carCenterX - pedestrianCenterX) < (currentCar.getBounds().getWidth() + currentPedestrian.getBounds().getWidth()) / 2 + 5;
+                    boolean intersectY = Math.abs(carCenterY - pedestrianCenterY) < (currentCar.getBounds().getHeight() + currentPedestrian.getBounds().getHeight()) / 2 + 5;
                     if(intersectY && intersectX){
                         currentPedestrian.stay();
                     }
@@ -145,7 +145,7 @@ public class Road extends JPanel implements ActionListener {
         double centerY2 = rect2.getCenterY();
         return Math.sqrt(Math.pow(centerX2 - centerX1, 2) + Math.pow(centerY2 - centerY1, 2));
     }
-    void animate() {
+    void simulate() {
         if (timer.isRunning()) timer.stop();
         else timer.start();
     }

@@ -12,23 +12,18 @@ public class Car implements Runnable {
         if(direction== Car.direction.right){
             x+=speed;
         }else if (direction== Car.direction.left) {
-            x-=speed;
+            x+=speed;
         }else if (direction== Car.direction.up) {
-            y-=speed;
+            y+=speed;
         }else {
             y+=speed;
         }
     }
     @Override
     public void run() {
-        while (true) {
-            try {
-                move();
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        move();
+        //while true queue.isred try queue.wait, w swiatlach notifyall czy zmienilo sie swiatlo
+        //while swiatlo zielone jedz
     }
     public int getX() {
         return x;
